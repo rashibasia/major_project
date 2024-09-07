@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff41, #ff4b2b);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+        .form-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 450px;
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        .form-container:hover {
+            transform: scale(1.03);
+        }
+        h3 {
+            margin-bottom: 20px;
+            color: #ff416c;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 1.8rem;
+        }
+        .form-control {
+            border: 2px solid #ff416c;
+            border-radius: 30px;
+            padding: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-control:focus {
+            border-color: #ff416c;
+            box-shadow: 0 8px 15px rgba(255, 65, 108, 0.2);
+        }
+        label {
+            display: block;
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            background-color: #ff7156;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #ff416c;
+            box-shadow: 0 6px 15px rgba(255, 65, 108, 0.3);
+        }
+        .btn-primary:active {
+            background-color: #ff7156; 
+            box-shadow: none; 
+        }
+        .error {
+            color: #ff4d4d;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .form-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .form-group input {
+            background-color: #f3f3f3;
+        }
+        .form-group input:focus {
+            background-color: #fff;
+        }
+        .form-group input:invalid {
+            border-color: #ff416c;
+        }
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 35px;
+            color: #ff416c;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="registrationForm">
+            <h3>Create Your Account</h3>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                <span class="error" id="nameError"></span>
+                <i class="input-icon fas fa-user"></i>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                <span class="error" id="emailError"></span>
+                <i class="input-icon fas fa-envelope"></i>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" class="form-control" id="phone" placeholder="Enter phone number" required>
+                <span class="error" id="phoneError"></span>
+                <i class="input-icon fas fa-phone"></i>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                <span class="error" id="passwordError"></span>
+                <i class="input-icon fas fa-lock"></i>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                <span class="error" id="confirmPasswordError"></span>
+                <i class="input-icon fas fa-lock"></i>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById('registrationForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+            // Clear previous errors
+            document.getElementById('nameError').innerText = '';
+            document.getElementById('emailError').innerText = '';
+            document.getElementById('phoneError').innerText = '';
+            document.getElementById('passwordError').innerText = '';
+            document.getElementById('confirmPasswordError').innerText = '';
+            // Validation
+            let isValid = true;
+            // Full Name validation
+            const name = document.getElementById('name').value;
+            if (name.length < 5) {
+                document.getElementById('nameError').innerText = 'Name must be at least 5 characters';
+                isValid = false;
+            }
+            // Email validation
+            const email = document.getElementById('email').value;
+            if (!email.includes('@')) {
+                document.getElementById('emailError').innerText = 'Enter a valid email';
+                isValid = false;
+            }
+            // Phone Number validation
+            const phone = document.getElementById('phone').value;
+            if (phone === '123456789' || phone.length !== 10) {
+                document.getElementById('phoneError').innerText = 'Enter a valid 10-digit phone number';
+                isValid = false;
+            }
+            // Password validation
+            const password = document.getElementById('password').value;
+            if (password.toLowerCase() === 'password' || password === name || password.length < 8) {
+                document.getElementById('passwordError').innerText = 'Password is too weak';
+                isValid = false;
+            }
+            // Confirm Password validation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (confirmPassword !== password) {
+                document.getElementById('confirmPasswordError').innerText = 'Passwords do not match';
+                isValid = false;
+            }
+            // If form is valid, simulate registration
+            if (isValid) {
+                const userData = {
+                    name,
+                    email,
+                    phone,
+                    password
+                };
+                localStorage.setItem('user', JSON.stringify(userData)); // Save user data to localStorage
+                alert('Registration successful! Your data has been saved.');
+                form.reset(); // Clear the form after successful submission
+            }
+        });
+    </script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
